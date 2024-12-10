@@ -28,10 +28,11 @@ services:
         ports:
             - 3306:3306
         environment:
-            - MYSQL_DATABASE=FloxDB
-            - MYSQL_ROOT_PASSWORD=root
+            MYSQL_DATABASE: FloxDB
+            MYSQL_ROOT_PASSWORD: root
         volumes:
             - mysql-data:/var/lib/mysql
+            - ./FloxDB_backup.sql:/docker-entrypoint-initdb.d/FloxDB_backup.sql
         networks:
             - springboot-mysql-network
         healthcheck:

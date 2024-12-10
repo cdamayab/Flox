@@ -23,6 +23,8 @@ dependencies {
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
 	implementation 'ch.qos.logback:logback-classic:1.4.11' 
     implementation 'org.springframework.boot:spring-boot-starter-logging' 
+	implementation 'org.apache.poi:poi-ooxml:5.2.3'
+	implementation 'ch.qos.logback:logback-classic:1.4.11'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

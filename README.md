@@ -25,23 +25,28 @@ Ambos servicios están desarrollados en **Java** usando **Spring Boot**, con doc
    ```
 
 2. **Levantar los contenedores con Docker**
-
+   Para modo de producción:
    ```bash
-   docker-compose up 
+   docker-compose up
+   ```
+   Esto compilará y levantará automáticamente los servicios de backend y la base de datos MySQL.
+
+   Para modo de desarrollo:
+   ```bash
+   RUN_MODE=dev docker-compose up
+   ```
+   Esto permitirá trabajar en modo desarrollo con `bootRun`.
+
+3. **Comandos auxiliares para compilación y desarrollo**
+
+   Para compilar el proyecto dentro del contenedor:
+   ```bash
+   docker exec flox-app ./gradlew build
    ```
 
-   Esto levantará los servicios de backend y la base de datos MySQL.
-
-3. **Compilar el proyecto dentro del contenedor**
-
+   Para ejecutar la aplicación en modo desarrollo dentro del contenedor:
    ```bash
-   docker exec flox-app /entrypoint.sh build
-   ```
-
-4. **Iniciar el servicio**
-
-   ```bash
-   docker exec flox-app /entrypoint.sh serve
+   docker exec flox-app ./gradlew bootRun
    ```
 
 5. **Acceder a la documentación Swagger**
@@ -64,3 +69,50 @@ Ambos servicios están desarrollados en **Java** usando **Spring Boot**, con doc
 - Gestión completa de órdenes.
 - CRUD con soporte para múltiples estados de orden.
 - Relación con productos y cálculo automático del precio total.
+
+### Excel Report Service
+- Endpoint: `/api/reports/products`
+- Descarga de informes en formato Excel con los productos actuales.
+
+## Ejemplos de Uso
+
+**Crear un Producto**
+```http
+POST http://localhost:8090/api/products
+Content-Type: application/json
+
+{
+    "name": "parlantes",
+    "description": "Parlantes estéreo de alta calidad",
+    "stock": 20,
+    "price": 250000.00,
+    "supplier": "LogyTech.",
+    "category": "Electrónica"
+}
+```
+
+**Crear una Orden**
+```http
+POST http://localhost:8090/api/orders
+Content-Type: application/json
+
+{
+    "customerId": 3,
+    "totalPrice": 1250000.0,
+    "status": "PENDING",
+    "orderItems": [
+      {
+        "productId": 4,
+        "quantity": 1,
+        "unitPrice": 700000.0,
+        "totalPrice": 700000.0
+      },
+      {
+        "productId": 5,
+        "quantity": 1,
+        "unitPrice": 550000.0,
+        "totalPrice": 550000.0
+      }
+    ]
+}
+```

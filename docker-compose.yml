@@ -8,33 +8,33 @@ services:
         container_name: flox-app
         ports:
             - 8090:8090
+            - 5005:5005
         depends_on:
-            mysqldb:
+            flox-mysqldb:
                 condition: service_healthy
         environment:
-            - SPRING_DATASOURCE_URL=jdbc:mysql://mysqldb:3306/FloxDB
+            - SPRING_DATASOURCE_URL=jdbc:mysql://flox-mysqldb:3306/FloxDB
             - SPRING_DATASOURCE_USERNAME=root
             - SPRING_DATASOURCE_PASSWORD=root
             - RUN_MODE=${RUN_MODE:-prod}
         volumes:
             - ./backend:/app
         networks:
-            - springboot-mysql-network
+            - flox-network
 
     # MySQL database service
-    mysqldb:
+    flox-mysqldb:
         image: mysql:8.0.33
-        container_name: mysqldb
+        container_name: flox-mysqldb
         ports:
             - 3306:3306
         environment:
             MYSQL_DATABASE: FloxDB
             MYSQL_ROOT_PASSWORD: root
         volumes:
-            - mysql-data:/var/lib/mysql
             - ./FloxDB_backup.sql:/docker-entrypoint-initdb.d/FloxDB_backup.sql
         networks:
-            - springboot-mysql-network
+            - flox-network
         healthcheck:
             test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
             retries: 10
@@ -45,5 +45,5 @@ volumes:
     mysql-data:
 
 networks:
-    springboot-mysql-network:
-        name: springboot-mysql-network
+    flox-network:
+        name: flox-network

@@ -1,0 +1,107 @@
+.product-grid {
+    display: flex;
+    flex-wrap: wrap; /* Permite que las tarjetas se acomoden de forma flexible */
+    gap: 20px;  /* Espacio entre las tarjetas */
+    margin: 20px;  /* Márgenes alrededor de la cuadrícula */
+    justify-content: flex-start; 
+}
+
+.product-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;  
+    background-color: #fff;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: auto; /* Deja que el ancho se ajuste automáticamente según el contenido */
+    height: auto; /* La altura también se ajustará a su contenido */
+    box-sizing: border-box; /* Asegura que padding y border se incluyan en el ancho total */
+}
+
+.product-card:hover {
+    transform: scale(1.05);
+}
+
+.product-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 15px;
+    width: 100%; /*Debe ocupar todo el ancho del contenedor*/
+}
+
+.separator {
+    margin: 0 10px;
+    color: #888;
+}
+
+.supplier, .category {
+    font-weight: bold;
+}
+
+.category {
+    font-weight: bold;
+}
+
+.product-image {
+    max-width: 200px;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 15px; 
+}
+
+.product-info h3 {
+    font-size: 1.2rem;
+    margin: 10px 0;
+}
+
+.product-info p {
+    font-size: 1rem;
+    color: #555;
+}
+
+.product-info em {
+    font-size: 0.9rem;
+    color: #888;
+}
+
+.product-info .description{
+    text-align: left;
+    max-width: 100%;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.pagination button {
+    padding: 8px 16px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.pagination button:disabled {
+    background-color: #dcdcdc;
+    cursor: not-allowed;
+}
+
+.pagination button:hover {
+    background-color: #0056b3;
+}
+
+

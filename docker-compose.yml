@@ -16,6 +16,7 @@ services:
             - SPRING_DATASOURCE_URL=jdbc:mysql://flox-mysqldb:3306/FloxDB
             - SPRING_DATASOURCE_USERNAME=root
             - SPRING_DATASOURCE_PASSWORD=root
+            - SPRING_PROFILES_ACTIVE=dev
             - RUN_MODE=${RUN_MODE:-prod}
         volumes:
             - ./backend:/app

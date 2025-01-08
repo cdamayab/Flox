@@ -91,28 +91,59 @@ Content-Type: application/json
 }
 ```
 
-**Crear una Orden**
-```http
-POST http://localhost:8090/api/orders
-Content-Type: application/json
+**Registrar un usuario**
+```
+curl -X POST http://localhost:8090/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "userName": "testuser2",
+    "lastName": "user2",
+    "email": "testuser2@example.com",
+    "password": "testuser2",
+    "userStatus": "active",
+    "role": "USER"
+  }'
+```
 
-{
-    "customerId": 3,
-    "totalPrice": 1250000.0,
-    "status": "PENDING",
-    "orderItems": [
-      {
-        "productId": 4,
-        "quantity": 1,
-        "unitPrice": 700000.0,
-        "totalPrice": 700000.0
-      },
-      {
-        "productId": 5,
-        "quantity": 1,
-        "unitPrice": 550000.0,
-        "totalPrice": 550000.0
-      }
-    ]
-}
+**Autenticacion**
+```
+curl -X POST http://localhost:8090/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username": "testuser", "password": "testuser"}'
+```
+
+# Ejemplos de uso con autorización
+
+    Se debe realizar el proceso de autenticación de manera previa para obtener el token jwt y reemplazarlo en la solicitud correspondiente.
+
+**Crear una orden**
+```
+curl -X POST http://localhost:8090/api/orders \
+     -H "Content-Type: application/json" \
+     -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsImlhdCI6MTczNTg4NTA4NCwiZXhwIjoxNzM1ODkyMjg0fQ.3Ectw7TPZx1Cpppnx_EW1_imR6IRr6gysivbjgFa2Rw" \
+     -d '{
+           "customerId": 3,
+           "totalPrice": 1250000.0,
+           "status": "PENDING",
+           "orderItems": [
+             {
+               "productId": 4,
+               "quantity": 1,
+               "unitPrice": 700000.0,
+               "totalPrice": 700000.0
+             },
+             {
+               "productId": 5,
+               "quantity": 1,
+               "unitPrice": 550000.0,
+               "totalPrice": 550000.0
+             }
+           ]
+         }'
+```
+
+**Listar ordenes**
+```
+curl -X GET "http://localhost:8090/api/orders?status=PENDING&customerId=3" \
+     -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlciIsImlhdCI6MTczNTg4NTA4NCwiZXhwIjoxNzM1ODkyMjg0fQ.3Ectw7TPZx1Cpppnx_EW1_imR6IRr6gysivbjgFa2Rw"
 ```

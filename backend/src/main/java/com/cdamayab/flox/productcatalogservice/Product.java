@@ -1,5 +1,6 @@
 package com.cdamayab.flox.productcatalogservice;
 
+import com.cdamayab.flox.common.*;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -8,7 +9,7 @@ import jakarta.persistence.Id;
 
 @Entity
 @Schema(description = "Represents a product in the catalog, including details like stock, price, and supplier information.")
-public class Product {
+public class Product extends BaseEntity  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

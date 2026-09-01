@@ -27,17 +27,24 @@ Ambos servicios están desarrollados en **Java** usando **Spring Boot**, con doc
 2. **Levantar los contenedores con Docker**
    Para modo de producción:
    ```bash
-   docker-compose up
+   docker-compose up --build
    ```
-   Esto compilará y levantará automáticamente los servicios de backend y la base de datos MySQL.
+   Esto compilará y levantará automáticamente los servicios del backend, el proxy de la API y la base de datos MySQL.
 
    Para modo de desarrollo:
    ```bash
-   RUN_MODE=dev docker-compose up
+   RUN_MODE=dev docker-compose up --build
    ```
    Esto permitirá trabajar en modo desarrollo con `bootRun`.
 
-3. **Comandos auxiliares para compilación y desarrollo**
+3. **Verificar servicios**
+
+   - Frontend: http://localhost:4200
+   - API a través del proxy: http://localhost:8081
+   - Swagger directo del backend: http://localhost:8090/swagger-ui/index.html
+   - MySQL: localhost:3306
+
+4. **Comandos auxiliares para compilación y desarrollo**
 
    Para compilar el proyecto dentro del contenedor:
    ```bash
@@ -56,6 +63,10 @@ Ambos servicios están desarrollados en **Java** usando **Spring Boot**, con doc
    ```
    http://localhost:8090/swagger-ui/index.html
    ```
+
+> El frontend no debe llamar directamente al backend en 8090. Las llamadas API del navegador pasan por el servicio `mitmproxy` en el puerto 8081, que reenvía tráfico hacia el backend en el puerto 8090.
+
+> La base de datos MySQL se crea con el script `FloxDB_backup.sql` al iniciar el contenedor. El script crea las tablas y carga datos iniciales en `FloxDB`.
 
 ## Servicios Implementados
 

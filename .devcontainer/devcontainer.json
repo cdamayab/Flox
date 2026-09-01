@@ -1,0 +1,34 @@
+{
+    "name": "Flox Development",
+
+    "build": {
+        "dockerfile": "Dockerfile",
+        "context": "."
+    },
+
+    "features": {
+        "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+    },
+
+    "workspaceFolder": "/workspaces/Flox",
+
+    "forwardPorts": [
+        4200,
+        8081,
+        8090,
+        3306,
+        5005
+    ],
+
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "angular.ng-template",
+                "dbaeumer.vscode-eslint",
+                "vscjava.vscode-java-pack",
+                "vmware.vscode-spring-boot",
+                "vscjava.vscode-gradle"
+            ]
+        }
+    }
+}

@@ -53,10 +53,11 @@ public class SecurityConfig {
      */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
+        http.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/auth/**").permitAll()
-                .requestMatchers("/swagger-ui/**").permitAll() 
+                .requestMatchers("/swagger-ui/**").permitAll()
                 .requestMatchers("/v3/api-docs/**").permitAll()
                 .requestMatchers("/auth/register").permitAll()
                 .requestMatchers("/auth/login").permitAll()
@@ -65,9 +66,7 @@ public class SecurityConfig {
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-            .sessionManagement(session -> 
-            session.sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Stateless session
-        );
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
     }
 
@@ -82,16 +81,18 @@ public class SecurityConfig {
     @Bean
     public UrlBasedCorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfig = new CorsConfiguration();
-        
-        corsConfig.addAllowedOrigin("http://localhost:4200");   // Allows requests only from localhost:4200 (Angular frontend).
-        corsConfig.addAllowedMethod("*");                       // Allows all HTTP methods (GET, POST, PUT, DELETE, etc.).
-        corsConfig.addAllowedHeader("*");                       // Allows all headers to be sent with the request.
-        corsConfig.setAllowCredentials(true);                   // Allows credentials (cookies, authorization headers, etc.)
 
-        // Register the CORS configuration to apply to all routes in the application.
+        corsConfig.addAllowedOrigin("http://localhost:4200");
+        corsConfig.addAllowedOrigin("http://127.0.0.1:4200");
+        corsConfig.addAllowedOrigin("http://localhost:8081");
+        corsConfig.addAllowedOrigin("http://127.0.0.1:8081");
+        corsConfig.addAllowedMethod("*");
+        corsConfig.addAllowedHeader("*");
+        corsConfig.setAllowCredentials(true);
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", corsConfig);  // Applies the configuration to all paths
-        
+        source.registerCorsConfiguration("/**", corsConfig);
+
         return source;
     }
 

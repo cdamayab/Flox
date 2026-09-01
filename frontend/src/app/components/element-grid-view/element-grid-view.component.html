@@ -1,0 +1,22 @@
+<div class="product-grid">
+    <div class="product-card" *ngFor="let product of products">
+        <div class="product-header">
+            <span class="supplier">{{ product.supplier }}</span>
+            <span class="separator">|</span>
+            <span class="category">{{ product.category }}</span>
+        </div>
+        <img src="https://cdn-icons-png.flaticon.com/512/9402/9402212.png" alt="{{ product.name }}" class="product-image">
+        <div class="product-info">
+            <h3>{{ product.name }}</h3>
+            <p class="description">{{ product.description }}</p>
+            <p><strong>${{ product.price | number }}</strong>
+            <br/><em>{{ product.stock }} unidades disponibles</em></p>
+        </div>
+    </div>
+</div>
+
+<div class="pagination">
+    <button (click)="prevPage()" [disabled]="currentPage === 1">Anterior</button>
+    <span>Página {{ currentPage }} de {{ totalPages }}</span>
+    <button (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente</button>
+</div>

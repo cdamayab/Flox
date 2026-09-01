@@ -1,0 +1,94 @@
+services:
+
+    # Angular application
+    frontend:
+        image: node:22.13.0-bookworm
+        container_name: flox-frontend
+        working_dir: /app
+        ports:
+            - "4200:4200"
+        volumes:
+            - ./frontend:/app
+            - frontend-node-modules:/app/node_modules
+        command: >
+            sh -c "npm install &&
+                   npm start -- --host 0.0.0.0"
+        depends_on:
+            - mitmproxy
+        networks:
+            - flox-network
+
+    # Reverse proxy for all browser requests to the API
+    mitmproxy:
+        image: mitmproxy/mitmproxy:12.2.3
+        container_name: flox-mitmproxy
+        ports:
+            - "8080:8080"
+            - "8081:8081"
+        command: >
+            mitmweb
+            --web-host 0.0.0.0
+            --web-port 8081
+            --listen-host 0.0.0.0
+            --listen-port 8080
+            --mode reverse:http://flox-app:8090
+            --set web_open_browser=false
+            --set web_password=1
+        depends_on:
+            app:
+                condition: service_started
+        networks:
+            - flox-network
+
+    # Spring Boot application service
+    app:
+        build:
+            context: ./backend
+            dockerfile: Dockerfile
+        container_name: flox-app
+        ports:
+            - "8090:8090"
+            - "5005:5005"
+        depends_on:
+            flox-mysqldb:
+                condition: service_healthy
+        environment:
+            - SPRING_DATASOURCE_URL=jdbc:mysql://flox-mysqldb:3306/FloxDB?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+            - SPRING_DATASOURCE_USERNAME=root
+            - SPRING_DATASOURCE_PASSWORD=root
+            - SPRING_PROFILES_ACTIVE=dev
+            - RUN_MODE=${RUN_MODE:-local}
+        volumes:
+            - .:/workspaces/Flox
+            - ./backend:/app
+        networks:
+            - flox-network
+
+    # MySQL database
+    flox-mysqldb:
+        image: mysql:8.4
+        container_name: flox-mysqldb
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_DATABASE: FloxDB
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_ROOT_HOST: "%"
+        volumes:
+            - mysql-data:/var/lib/mysql
+            - ./FloxDB_backup.sql:/docker-entrypoint-initdb.d/FloxDB_backup.sql
+        networks:
+            - flox-network
+        healthcheck:
+            test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -proot --silent"]
+            retries: 20
+            interval: 5s
+            timeout: 20s
+
+volumes:
+    mysql-data:
+    frontend-node-modules:
+
+networks:
+    flox-network:
+        name: flox-network

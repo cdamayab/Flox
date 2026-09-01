@@ -1,0 +1,32 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Flox: Start",
+      "type": "shell",
+      "command": "docker compose up -d app frontend mitmproxy flox-mysqldb",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Flox: Stop",
+      "type": "shell",
+      "command": "docker compose stop app frontend mitmproxy flox-mysqldb",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Flox: Restart",
+      "type": "shell",
+      "command": "docker compose restart app frontend mitmproxy flox-mysqldb",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    }
+  ]
+}
